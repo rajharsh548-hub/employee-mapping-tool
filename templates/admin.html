@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin - Frontlyne</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="box">
+    <h2>Admin Panel</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <p class="{{ category }}">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <table>
+      <tr><th>Email</th><th>Password</th><th>Action</th></tr>
+      {% for user, pwd in users.items() %}
+      <tr>
+        <td>{{ user }}</td>
+        <td>{{ pwd }}</td>
+        <td>
+          {% if user != 'admin@frontlyne.com' %}
+            <form method="POST" action="{{ url_for('delete_user') }}" style="display:inline;">
+              <input type="hidden" name="email" value="{{ user }}">
+              <button type="submit">Delete</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h3>Add User</h3>
+    <form method="POST" action="{{ url_for('add_user') }}">
+      <input type="email" name="email" placeholder="email" required>
+      <input type="text" name="password" placeholder="password" required>
+      <button type="submit">Add</button>
+    </form>
+
+    <a class="btn" href="{{ url_for('upload_page') }}">Back</a>
+  </div>
+</body>
+</html>
