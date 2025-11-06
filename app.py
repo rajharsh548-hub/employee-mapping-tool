@@ -6,8 +6,7 @@ from openpyxl import Workbook
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET", "replace_this_with_a_real_secret")
-
+app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret")
 # ---------------------------
 # Initial users (edit as needed)
 # ---------------------------
