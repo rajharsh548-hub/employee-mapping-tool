@@ -1,47 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Admin - Frontlyne</title>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="box">
+  <div class="container">
     <h2>Admin Panel</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, msg in messages %}
-          <p class="{{ category }}">{{ msg }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    <form action="{{ url_for('add_user') }}" method="POST">
+      <input type="text" name="email" placeholder="User Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Add User</button>
+    </form>
 
-    <table>
-      <tr><th>Email</th><th>Password</th><th>Action</th></tr>
+    <h3>Current Users:</h3>
+    <ul>
       {% for user, pwd in users.items() %}
-      <tr>
-        <td>{{ user }}</td>
-        <td>{{ pwd }}</td>
-        <td>
+        <li>{{ user }}
           {% if user != 'admin@frontlyne.com' %}
-            <form method="POST" action="{{ url_for('delete_user') }}" style="display:inline;">
+            <form action="{{ url_for('delete_user') }}" method="POST" style="display:inline;">
               <input type="hidden" name="email" value="{{ user }}">
               <button type="submit">Delete</button>
             </form>
           {% endif %}
-        </td>
-      </tr>
+        </li>
       {% endfor %}
-    </table>
+    </ul>
 
-    <h3>Add User</h3>
-    <form method="POST" action="{{ url_for('add_user') }}">
-      <input type="email" name="email" placeholder="email" required>
-      <input type="text" name="password" placeholder="password" required>
-      <button type="submit">Add</button>
-    </form>
-
-    <a class="btn" href="{{ url_for('upload_page') }}">Back</a>
+    <a href="{{ url_for('upload_page') }}"><button>Back</button></a>
   </div>
 </body>
 </html>
